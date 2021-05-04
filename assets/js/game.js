@@ -11,6 +11,7 @@ var enemyHealth = 50;
 var enemyAttack = 12;
 
 var fight = function() {
+
   window.alert("Welcome to the Imperial City Arena!");
 
   var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
@@ -59,11 +60,11 @@ var fight = function() {
         fight();
       }
     }
-    
-     else {
-      window.alert("You need to choose a valid option. Try again!");
-    }
+    // if player did not chose 1 or 2 in prompt
+   else {
+     window.alert("You need to choose a valid option. Try again!");
+  }
+};
 
-  };
-
+// run fight function to start game
 fight();
