@@ -1,4 +1,5 @@
-console.log("hello!");
+window.alert("Welcome to the Imperial City Arena!");
+  console.log("hello!");
 
 var playerName = window.prompt("What is your Combatant's name?");
 var playerHealth = 100;
@@ -17,10 +18,8 @@ for(var i = 0; i < enemyNames.length; i++) {
   console.log(i);
   console.log(enemyNames[i] + " is at " + i + " index");
 }
-
 var fight = function(enemyNames) {
-
-  window.alert("Welcome to the Imperial City Arena!");
+    while(enemyHealth > 0) {
 
   var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
 
@@ -59,24 +58,29 @@ var fight = function(enemyNames) {
     
       // if yes (true), leave fight
       if (confirmSkip) {
-        window.alert(playerName + " has decided to skip this fight. Goodbye!");
+        window.alert(playerName + " has decided to skip the fight with " + enemyNames + ". Goodbye!");
+        console.log( "Fight with " + enemyNames + " skipped.")
         // subtract money from playerMoney for skipping
         playerMoney = playerMoney - 2;
         window.alert(playerName + " still has " + playerMoney + " coin remaining.");
+        console.log(playerMoney + " coin remaining.");
       }
       // if no (false), ask question again by running fight() again
       else {
         fight();
       }
-    }
+      }
     // if player did not chose 1 or 2 in prompt
    else {
      window.alert("You need to choose a valid option. Try again!");
      fight();
+    }
   }
 };
 
 // run fight function to start game
 for(var i = 0; i < enemyNames.length; i++) {
-  fight(enemyNames[i]);
+  var pickEnemyName = enemyNames[i];
+  enemyHealth = 50;
+  fight(pickEnemyName);
 }
