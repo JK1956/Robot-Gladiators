@@ -18,7 +18,7 @@ for(var i = 0; i < enemyNames.length; i++) {
   console.log(enemyNames[i] + " is at " + i + " index");
 }
 
-var fight = function() {
+var fight = function(enemyNames) {
 
   window.alert("Welcome to the Imperial City Arena!");
 
@@ -77,4 +77,6 @@ var fight = function() {
 };
 
 // run fight function to start game
-fight();
+for(var i = 0; i < enemyNames.length; i++) {
+  fight(enemyNames[i]);
+}
