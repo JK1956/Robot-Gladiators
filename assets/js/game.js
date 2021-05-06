@@ -88,20 +88,28 @@ var startGame = function() {
       var pickEnemyName = enemyNames[i];
       enemyHealth = 50;
       fight(pickEnemyName);
+      // if we're not at last enemy in array
+      if (playerHealth > 0 && i < enemyNames.length - 1) {
+        // ask to enter store
+        var storeConfirm = window.confirm("The fight is over. Visit the Fire Keeper before the next round?");
+        if (storeConfirm) {
+          shop();
+        }
+      }
     }
   }
   endGame();
 };
 
 var endGame = function () {
-  window.alert ("Your journey is now complete. Your legacy is as follows...")
+  window.alert ("Your journey is now complete. Your legacy is as follows...");
     // if still alive
     if (playerHealth > 0) {
-      window.alert("Congratulations. Your enemies have beem vanquished and the First Flame restored.")
+      window.alert("Congratulations. Your enemies have beem vanquished and the First Flame restored.");
     }
     // if dead
     if (playerHealth <= 0) {
-      window.alert("The Age of Fire is over, and doomed is your dark soul.")
+      window.alert("The Age of Fire is over, and doomed is your dark soul.");
     }
   
     // ask player if they'd like to play again
@@ -112,8 +120,57 @@ var endGame = function () {
       startGame();
     } 
     else {
-      window.alert("As prophesized, we pray The Hero returns again.");
+      window.alert("As prophesized, The Hero will return again.");
     }
+};
+
+var shop = function() {
+  // ask player what they want to do
+  var shopPrompt = window.prompt("Would you like to REFILL your vigor, UPGRADE your attack, or LEAVE the Bonfire? Please enter one: 'REFILL', 'UPGRADE', or 'LEAVE' to make a choice.")
+  console.log("entered the shop");
+
+  // use switch to carry out action
+  switch (shopPrompt) {
+    case "refill":
+    case "REFILL":
+      if (playerMoney >= 7) {
+        window.alert("Refilling player's vigor by 10 for 7 coin.");
+
+        // increase health and decrease money
+        playerHealth = playerHealth + 10;
+        playerMoney = playerMoney - 7;
+      }
+      else {
+        window.alert("You don't have enough coin...")
+        shop();
+      }
+      break;
+    case "upgrade":
+    case "UPGRADE":
+      if (playerMoney >= 7) {
+        window.alert("Upgrading player's attack by 6 for 7 coin.");
+
+        // increase attack and decrease money
+        playerAttack = playerAttack + 6;
+        playerMoney = playerMoney - 7;
+      }
+      else {
+        window.alert("You don't have enough coin...");
+        shop();
+      }
+      break;
+    case "leave":
+    case "LEAVE":
+      window.alert("Leaving the Bonfire.");
+
+      // do nothing, so function will end
+      break;
+    default:
+      window.alert("You did not pick a valid option. Try again.");
+      // call shop() again to force player to pick a valid option
+      shop();
+      break;
+  }
 };
 
 // start game when page loads
