@@ -1,5 +1,5 @@
 window.alert("Welcome to the Imperial City Arena!");
-console.log("hello!");  
+  console.log("hello!");
 
 var playerName = window.prompt("What is your Combatant's name?");
 var playerHealth = 100;
@@ -37,8 +37,7 @@ var fight = function(enemyName) {
         console.log("playerMoney", playerMoney)
         break;
       }
-    }
-    window.alert('Pit Dogs, begin round ' + (i + 1) + '!')
+    };
 
     // remove enemy's health by subtracting the amount set in the playerAttack variable
     enemyHealth = enemyHealth - playerAttack;
@@ -68,6 +67,7 @@ var fight = function(enemyName) {
     // check player's health
     if (playerHealth <= 0) {
       window.alert('YOU DIED');
+      window.alert(enemyName + ' is our champion!');
       // leave while() loop if player is dead
       break;
     } else {
@@ -76,11 +76,45 @@ var fight = function(enemyName) {
   }
 };
 
-// run fight function to start game
-for(var i = 0; i < enemyNames.length; i++) {
-  if (playerHealth > 0) {
-    var pickEnemyName = enemyNames[i];
-    enemyHealth = 50;
-    fight(pickEnemyName);
+// function to start game
+var startGame = function() {
+  // reset player stats
+  playerHealth = 100;
+  playerAttack = 10;
+  playerMoney = 10;
+  for(var i = 0; i < enemyNames.length; i++) {
+    if (playerHealth > 0) {
+      window.alert('Pit Dogs, begin round ' + (i + 1) + '!');
+      var pickEnemyName = enemyNames[i];
+      enemyHealth = 50;
+      fight(pickEnemyName);
+    }
   }
-}
+  endGame();
+};
+
+var endGame = function () {
+  window.alert ("Your journey is now complete. Your legacy is as follows...")
+    // if still alive
+    if (playerHealth > 0) {
+      window.alert("Congratulations. Your enemies have beem vanquished and the First Flame restored.")
+    }
+    // if dead
+    if (playerHealth <= 0) {
+      window.alert("The Age of Fire is over, and doomed is your dark soul.")
+    }
+  
+    // ask player if they'd like to play again
+    var playAgainConfirm = window.confirm("Would you like to play again?");
+    
+    if (playAgainConfirm) {
+      // restart the game
+      startGame();
+    } 
+    else {
+      window.alert("As prophesized, we pray The Hero returns again.");
+    }
+};
+
+// start game when page loads
+startGame();
