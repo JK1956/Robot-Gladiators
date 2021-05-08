@@ -1,28 +1,64 @@
 window.alert("Welcome to the Imperial City Arena!");
-  console.log("hello!");
+console.log("hello!");
 
 var playerInfo = {
   name: window.prompt("What is your Combatant's name?"),
   health: 100,
-  attack: 10,
-  money: 10
+  attack: 13,
+  money: 10,
+  reset: function() {
+    this.health = 100;
+    this.money = 10;
+    this.attack = 10;
+  },
+  refillHealth: function() {
+    if (this.money >= 7) {
+    this.health += 12;
+    this.money -= 7;
+    }
+    else {
+      window.alert("You don't have enough coin...")
+    }
+  },
+  upgradeAttack: function() {
+    if (this.money >= 7) {
+    this.attack += 8;
+    this.money -= 7;
+    }
+    else {
+      window.alert("You don't have enough coin...")
+    }
+  } 
 }
 
 // You can also log multiple values at once like this
 console.log(playerInfo.name, playerInfo.attack, playerInfo.health);
 
-var enemyNames = ["Roborto", "Amy Android", "Robo Trumble"];
-var enemyHealth = 50;
-var enemyAttack = 12;
-
-for(var i = 0; i < enemyNames.length; i++) {
-  console.log(enemyNames[i]);
-  console.log(i);
-  console.log(enemyNames[i] + " is at " + i + " index");
+// function to generate a random numeric value
+var randomNumber = function(min, max) {
+  var value = Math.floor(Math.random() * (max-min + 1)) + min;
+  
+  return value;
 };
 
-var fight = function(enemyName) {
-  while (playerInfo.health > 0 && enemyHealth > 0) {
+var enemyInfo = [
+  {
+    name: "Aldrich, Devourer of Gods",
+    attack: randomNumber(10, 12)
+  },
+  {
+    name: "Dancer of the Boreal Valley",
+    attack: randomNumber(9, 14)
+  },
+  {
+    name: "Soul of Cinder",
+    attack: randomNumber(11, 15)
+  }
+];
+
+var fight = function(enemy) {
+  console.log(enemy);
+  while (playerInfo.health > 0 && enemy.health > 0) {
     // ask player if they'd like to fight or run
     var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
 
@@ -33,25 +69,25 @@ var fight = function(enemyName) {
 
       // if yes (true), leave fight
       if (confirmSkip) {
-        window.alert(playerName + ' has decided to skip this fight. Goodbye!');
-        // subtract money from playerMoney for skipping
-        playerMoney = Math.max(0, playerMoney - 10);
-        console.log("playerMoney", playerMoney)
+        window.alert(playerInfo.name + ' has decided to skip this fight. Goodbye!');
+        // subtract money from playerInfo.money for skipping
+        playerInfo.money = Math.max(0, playerInfo.money - 10);
+        console.log("playerInfo.money", playerInfo.money)
         break;
       }
     };
 
     // generate random damage value based on player's attack power
-    var damage = randomNumber(playerAttack - 3, playerAttack);
-    // remove enemy's health by subtracting the amount set in the playerAttack variable
-    enemyHealth = Math.max(0, enemyHealth - damage);
+    var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+    // remove enemy's health by subtracting the amount set in the playerInfo.attack variable
+    enemy.health = Math.max(0, enemy.health - damage);
     console.log(
-      playerName + ' attacked ' + enemyName + '. ' + enemyName + ' now has ' + enemyHealth + ' vigor remaining.'
+      playerInfo.name + ' attacked ' + enemy.name + '. ' + enemy.name + ' now has ' + enemy.health + ' vigor remaining.'
     );
 
     // check enemy's health
-    if (enemyHealth <= 0) {
-      window.alert(enemyName + ' has died!');
+    if (enemy.health <= 0) {
+      window.alert(enemy.name + ' has died!');
 
       // award player money for winning
       playerInfo.money = playerInfo.money + 20;
@@ -59,24 +95,25 @@ var fight = function(enemyName) {
       // leave while() loop since enemy is dead
       break;
     } else {
-      window.alert(enemyName + ' still has ' + enemyHealth + ' vigor left.');
+      window.alert(enemy.name + ' still has ' + enemy.health + ' vigor left.');
     }
 
-    var damage = randomNumber(enemyAttack - 3, enemyAttack);
-    // remove players's health by subtracting the amount set in the enemyAttack variable
-    playerHealth = Math.max(0, playerHealth - damage);
+    var damage = randomNumber(enemy.attack - 3, enemy.attack);
+    // remove players's health by subtracting the amount set in the enemy.attack variable
+    playerInfo.health = Math.max(0, playerInfo.health - damage);
+    
     console.log(
-      enemyName + ' attacked ' + playerName + '. ' + playerName + ' now has ' + playerHealth + ' vigor remaining.'
+      enemy.name + ' attacked ' + playerInfo.name + '. ' + playerInfo.name + ' now has ' + playerInfo.health + ' vigor remaining.'
     );
 
     // check player's health
     if (playerInfo.health <= 0) {
       window.alert('YOU DIED');
-      window.alert(enemyName + ' is our champion!');
+      window.alert(enemy.name + ' is our champion!');
       // leave while() loop if player is dead
       break;
     } else {
-      window.alert(playerName + ' still has ' + playerHealth + ' vigor left.');
+      window.alert(playerInfo.name + ' still has ' + playerInfo.health + ' vigor left.');
     }
   }
 };
@@ -84,17 +121,15 @@ var fight = function(enemyName) {
 // function to start game
 var startGame = function() {
   // reset player stats
-  playerInfo.health = 100;
-  playerInfo.attack = 10;
-  playerInfo.money = 10;
-  for(var i = 0; i < enemyNames.length; i++) {
+  playerInfo.reset();
+  for(var i = 0; i < enemyInfo.length; i++) {
     if (playerInfo.health > 0) {
       window.alert('Pit Dogs, begin round ' + (i + 1) + '!');
-      var pickEnemyName = enemyNames[i];
-      enemyHealth = randomNumber(40, 60)
-      fight(pickEnemyName);
+      var pickedEnemyObj = enemyInfo[i];
+      pickedEnemyObj.health = randomNumber(40, 60);
+      fight(pickedEnemyObj);
       // if we're not at last enemy in array
-      if (playerInfo.health > 0 && i < enemyNames.length - 1) {
+      if (playerInfo.health > 0 && i < enemyInfo.length - 1) {
         // ask to enter store
         var storeConfirm = window.confirm("The fight is over. Visit the Fire Keeper before the next round?");
         if (storeConfirm) {
@@ -128,13 +163,6 @@ var endGame = function () {
       window.alert("As prophesized, The Hero will return again.");
     }
   };
-  
-// function to generate a random numeric value
-var randomNumber = function(min, max) {
-  var value = Math.floor(Math.random() * (max-min + 1)) + min;
-  
-  return value;
-};
 
 var shop = function() {
   // ask player what they want to do
@@ -145,31 +173,11 @@ var shop = function() {
   switch (shopPrompt) {
     case "refill":
     case "REFILL":
-      if (playerInfo.money >= 7) {
-        window.alert("Refilling player's vigor by 10 for 7 coin.");
-
-        // increase health and decrease money
-        playerInfo.health = playerInfo.health + 10;
-        playerInfo.money = playerInfo.money - 7;
-      }
-      else {
-        window.alert("You don't have enough coin...")
-        shop();
-      }
+      playerInfo.refillHealth();
       break;
     case "upgrade":
     case "UPGRADE":
-      if (playerInfo.money >= 7) {
-        window.alert("Upgrading player's attack by 6 for 7 coin.");
-
-        // increase attack and decrease money
-        playerInfo.attack = playerInfo.attack + 6;
-        playerInfo.money = playerInfo.money - 7;
-      }
-      else {
-        window.alert("You don't have enough coin...");
-        shop();
-      }
+      playerInfo.upgradeAttack();
       break;
     case "leave":
     case "LEAVE":
@@ -184,7 +192,6 @@ var shop = function() {
       break;
   }
 };
-
 
 // start game when page loads
 startGame();
